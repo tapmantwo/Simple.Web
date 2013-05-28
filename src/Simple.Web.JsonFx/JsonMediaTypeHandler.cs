@@ -47,29 +47,36 @@ namespace Simple.Web.JsonFx
 
         public Task Write(IContent content, Stream outputStream)
         {
-            if (content.Model != null)
+            try
             {
-                object output;
+                if (content.Model != null)
+                {
+                    object output;
 
-                var enumerable = content.Model as IEnumerable<object>;
-                if (enumerable != null)
-                {
-                    output = ProcessList(enumerable.ToList());
-                }
-                else
-                {
-                    output = ProcessContent(content);
-                }
-                byte[] buffer;
-                using (var writer = new StringWriter())
-                {
-                    var dataWriterSettings = new DataWriterSettings(new MonoCompatResolverStrategy(),
-                                                                    new Iso8601DateFilter());
+                    var enumerable = content.Model as IEnumerable<object>;
+                    if (enumerable != null)
+                    {
+                        output = ProcessList(enumerable.ToList());
+                    }
+                    else
+                    {
+                        output = ProcessContent(content);
+                    }
+                    byte[] buffer;
+                    using (var writer = new StringWriter())
+                    {
+                        var dataWriterSettings = new DataWriterSettings(new MonoCompatResolverStrategy(),
+                                                                        new Iso8601DateFilter());
 
-                    new JsonWriter(dataWriterSettings).Write(output, writer);
-                    buffer = Encoding.Default.GetBytes(writer.ToString());
+                        new JsonWriter(dataWriterSettings).Write(output, writer);
+                        buffer = Encoding.Default.GetBytes(writer.ToString());
+                    }
+                    return outputStream.WriteAsync(buffer, 0, buffer.Length);
                 }
-                return outputStream.WriteAsync(buffer, 0, buffer.Length);
+            }
+            catch (Exception ex)
+            {
+                return TaskHelper.Exception(ex);
             }
 
             return TaskHelper.Completed();
