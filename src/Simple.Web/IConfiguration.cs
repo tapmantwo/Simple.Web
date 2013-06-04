@@ -31,7 +31,7 @@ namespace Simple.Web
         /// Gets the Set of Origins which are allowed to access this application.
         /// To allow full CORS from any origin, add the wildcard &quot;*&quot; to this Set.
         /// </summary>
-        ISet<IAccessControlEntry> AccessControl { get; }
+        IAccessControlCollection AccessControl { get; }
             
         /// <summary>
         /// Gets or sets the IoC container.

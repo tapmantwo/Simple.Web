@@ -125,7 +125,7 @@ namespace Simple.Web.Routing
             }
             if (attributes.HasFlag(GenericParameterAttributes.DefaultConstructorConstraint))
             {
-                if (target.GetConstructor(new Type[0]) == null) return false;
+                if (target.GetConstructor(Type.EmptyTypes) == null) return false;
             }
             if (attributes.HasFlag(GenericParameterAttributes.ReferenceTypeConstraint))
             {

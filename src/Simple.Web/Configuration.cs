@@ -38,7 +38,8 @@ namespace Simple.Web
         {
             get { return _publicFolders; }
         }
-        private readonly ISet<IAccessControlEntry> _accessControl = new HashSet<IAccessControlEntry>(AccessControlEntry.OriginComparer);
+
+        private readonly IAccessControlCollection _accessControl = new AccessControlCollection();
 
         /// <summary>
         ///     Gets a dictionary representing URLs which map to files but are only for authenticated users.
@@ -60,7 +61,7 @@ namespace Simple.Web
             set { _container = value ?? new DefaultSimpleContainer(); }
         }
 
-        public ISet<IAccessControlEntry> AccessControl { get { return _accessControl; } }
+        public IAccessControlCollection AccessControl { get { return _accessControl; } }
 
         /// <summary>
         ///     Gets or sets the type of the handler which provides the login page for Forms-based Authentication.
